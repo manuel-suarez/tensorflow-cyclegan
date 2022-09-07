@@ -292,3 +292,7 @@ for epoch in range(EPOCHS):
 
   print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
                                                       time.time()-start))
+
+# Run the trained model on the test dataset
+for inp in test_horses.take(5):
+  generate_images(generator_g, inp, f"testimage_{inp+1}")
