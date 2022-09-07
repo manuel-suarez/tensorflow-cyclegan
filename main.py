@@ -269,3 +269,26 @@ def train_step(real_x, real_y):
 
   discriminator_y_optimizer.apply_gradients(zip(discriminator_y_gradients,
                                                 discriminator_y.trainable_variables))
+
+# Train
+for epoch in range(EPOCHS):
+  start = time.time()
+
+  n = 0
+  for image_x, image_y in tf.data.Dataset.zip((train_horses, train_zebras)):
+    train_step(image_x, image_y)
+    if n % 10 == 0:
+      print ('.', end='')
+    n += 1
+
+  # Using a consistent image (sample_horse) so that the progress of the model
+  # is clearly visible.
+  generate_images(generator_g, sample_horse, f"trainstep_{epoch+1}")
+
+  if (epoch + 1) % 5 == 0:
+    ckpt_save_path = ckpt_manager.save()
+    print ('Saving checkpoint for epoch {} at {}'.format(epoch+1,
+                                                         ckpt_save_path))
+
+  print ('Time taken for epoch {} is {} sec\n'.format(epoch + 1,
+                                                      time.time()-start))
