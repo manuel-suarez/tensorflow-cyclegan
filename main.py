@@ -98,3 +98,42 @@ plt.imshow(random_jitter(sample_zebra[0]) * 0.5 + 0.5)
 
 print("Plotting zebra")
 plt.savefig('figure_2.png')
+
+# Configure Pix2Pix model
+OUTPUT_CHANNELS = 3
+
+generator_g = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
+generator_f = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
+
+discriminator_x = pix2pix.discriminator(norm_type='instancenorm', target=False)
+discriminator_y = pix2pix.discriminator(norm_type='instancenorm', target=False)
+
+to_zebra = generator_g(sample_horse)
+to_horse = generator_f(sample_zebra)
+plt.figure(figsize=(8, 8))
+contrast = 8
+
+imgs = [sample_horse, to_zebra, sample_zebra, to_horse]
+title = ['Horse', 'To Zebra', 'Zebra', 'To Horse']
+
+for i in range(len(imgs)):
+  plt.subplot(2, 2, i+1)
+  plt.title(title[i])
+  if i % 2 == 0:
+    plt.imshow(imgs[i][0] * 0.5 + 0.5)
+  else:
+    plt.imshow(imgs[i][0] * 0.5 * contrast + 0.5)
+plt.savefig('figure_3.png')
+
+plt.figure(figsize=(8, 8))
+
+plt.subplot(121)
+plt.title('Is a real zebra?')
+plt.imshow(discriminator_y(sample_zebra)[0, ..., -1], cmap='RdBu_r')
+
+plt.subplot(122)
+plt.title('Is a real horse?')
+plt.imshow(discriminator_x(sample_horse)[0, ..., -1], cmap='RdBu_r')
+
+plt.savefig('figure_4.png')
+
