@@ -136,4 +136,5 @@ plt.title('Is a real horse?')
 plt.imshow(discriminator_x(sample_horse)[0, ..., -1], cmap='RdBu_r')
 
 plt.savefig('figure_4.png')
+print("Model builded")
 
