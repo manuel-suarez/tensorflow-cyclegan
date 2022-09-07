@@ -294,5 +294,5 @@ for epoch in range(EPOCHS):
                                                       time.time()-start))
 
 # Run the trained model on the test dataset
-for inp in test_horses.take(5):
-  generate_images(generator_g, inp, f"testimage_{inp+1}")
+for idx, inp in enumerate(test_horses.take(5)):
+  generate_images(generator_g, inp, f"testimage_{idx+1}")
