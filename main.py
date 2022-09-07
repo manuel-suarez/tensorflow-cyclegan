@@ -191,7 +191,7 @@ if ckpt_manager.latest_checkpoint:
   print ('Latest checkpoint restored!!')
 
 # Training
-EPOCHS = 10
+EPOCHS = 20000
 
 def generate_images(model, test_input, figname):
   prediction = model(test_input)
@@ -283,10 +283,11 @@ for epoch in range(EPOCHS):
 
   # Using a consistent image (sample_horse) so that the progress of the model
   # is clearly visible.
-  generate_images(generator_g, sample_horse, f"trainstep_{epoch+1}")
+
 
   if (epoch + 1) % 5 == 0:
     ckpt_save_path = ckpt_manager.save()
+    generate_images(generator_g, sample_horse, f"trainstep_{epoch + 1}")
     print ('Saving checkpoint for epoch {} at {}'.format(epoch+1,
                                                          ckpt_save_path))
 
